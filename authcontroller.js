@@ -3,9 +3,7 @@ const bcrypt = require("bcryptjs");              //Use bcrypt for password hashi
 
 const db = require("../db");
 
-/*
-  Register User (Hash password, insert user into database)
-*/
+//Registers User into Database
 exports.register = (req, res) => {
   const { username, email, password } = req.body;
 
@@ -16,7 +14,7 @@ exports.register = (req, res) => {
     VALUES (?, ?, ?, 1)
   `;
 
-  // Execute query
+  // Executes query
   db.query(sql, [username, email, passwordHash], (err) => {
     if (err) {
       return res.status(400).json({ error: err });
@@ -26,7 +24,7 @@ exports.register = (req, res) => {
 };
 
 /*
-  Login User (Find user (email), compare password, store user in session)
+  Login User (Find user by email, compare password, and store user in session)
 */
 exports.login = (req, res) => {
   const { email, password } = req.body;
@@ -62,9 +60,7 @@ exports.login = (req, res) => {
   );
 };
 
-/*
-  Destroy Session to Logout
-*/
+//Destroy Session to logout
 exports.logout = (req, res) => {
   req.session.destroy(() => {
     res.json({ message: "Logged out successfully" });
