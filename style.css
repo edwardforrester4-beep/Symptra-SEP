@@ -1,63 +1,68 @@
 body{
-background:royalblue;
-color:white;
-font-family:Arial;
-margin:0;
-}
-
-h1,h2,h3{
-font-style:italic;
-text-align:center;
+    background:linear-gradient(to right, #4169e1, #001f66);
+    color:white;
+    font-family:Arial;
+    margin:0;
 }
 
 .navbar{
-background:#002c8a;
-padding:15px;
-display:flex;
-justify-content:space-between;
+    background:#001f66;
+    padding:15px 30px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
 }
 
 .navbar a{
-color:white;
-text-decoration:none;
-margin:0 15px;
+    color:white;
+    margin:0 10px;
+    text-decoration:none;
+    font-weight:bold;
 }
 
 .container{
-width:70%;
-margin:auto;
-padding:30px;
+    width:25%;
+    margin:50px auto;
+    text-align:center;
 }
 
 .card{
-background:#0039b3;
-padding:20px;
-margin:20px 0;
-border-radius:8px;
+    background:#0039b3;
+    padding:25px;
+    border-radius:20px;
 }
 
-input{
-padding:10px;
-width:100%;
-margin:10px 0;
+input, select{
+    width:60%;
+    padding:10px;
+    margin:10px auto;
+    display:block;
+    border-radius:30px;
+    border:none;
+    text-align:center;
 }
 
 button{
-background:white;
-color:royalblue;
-padding:10px;
-border:none;
-cursor:pointer;
+    padding:10px 20px;
+    border-radius:30px;
+    border:none;
+    background:white;
+    color:royalblue;
+    cursor:pointer;
 }
 
-table{
-width:100%;
-background:white;
-color:black;
-border-collapse:collapse;
+button:hover{
+    background:red;
+    color:white;
+    font-style:italic;
 }
 
-td,th{
-padding:10px;
-border:1px solid #ccc;
+.link{
+    display:block;
+    margin-top:10px;
+    color:#ddd;
+}
+
+.link:hover{
+    color:white;
 }
