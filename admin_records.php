@@ -5,45 +5,42 @@ include 'db.php';
 if(!isset($_SESSION['user_id'])){
     header("Location: login.php"); exit();
 }
+
 if($_SESSION['role'] !== "admin"){
     header("Location: dashboard.php"); exit();
 }
 
 $result = $conn->query("
-SELECT records.*, users.username 
-FROM records 
-JOIN users ON records.user_id = users.id
+SELECT insurance.*, users.username 
+FROM insurance
+JOIN users ON insurance.user_id = users.id
+ORDER BY insurance.id DESC
 ");
 ?>
 
 <link rel="stylesheet" href="style.css">
 
-<div class="navbar">
-<h2>Admin Portal</h2>
-<div>
-<a href="admin_dashboard.php">Dashboard</a>
-<a href="admin_appointments.php">Appointments</a>
-<a href="admin_records.php">Records</a>
-<a href="admin_billing.php">Billing</a>
-<a href="messages.php">Messages</a>
-<a href="logout.php">Logout</a>
-</div>
-</div>
+<?php include 'navbar.php'; ?>
 
 <div class="container">
 <div class="card">
 
-<h3>All Medical Records</h3>
+<h3>Patient Insurance Information</h3>
 
 <table>
-<tr><th>Patient</th><th>Doctor</th><th>Diagnosis</th><th>Date</th></tr>
+<tr>
+<th>Patient</th>
+<th>Provider</th>
+<th>Policy #</th>
+<th>Group #</th>
+</tr>
 
 <?php while($row=$result->fetch_assoc()){ ?>
 <tr>
 <td><?php echo $row['username']; ?></td>
-<td><?php echo $row['doctor']; ?></td>
-<td><?php echo $row['diagnosis']; ?></td>
-<td><?php echo $row['date']; ?></td>
+<td><?php echo $row['provider']; ?></td>
+<td><?php echo $row['policy_number']; ?></td>
+<td><?php echo $row['group_number']; ?></td>
 </tr>
 <?php } ?>
 
