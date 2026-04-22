@@ -2,22 +2,23 @@
 session_start();
 include 'db.php';
 
-if($_SESSION['role']!="admin"){
-header("Location: dashboard.php");
+if(!isset($_SESSION['user_id'])){
+    header("Location: login.php"); exit();
+}
+
+if($_SESSION['role'] !== "admin"){
+    header("Location: dashboard.php"); exit();
 }
 
 $id=$_SESSION['user_id'];
-$resUser=$conn->query("SELECT username FROM users WHERE id='$id'");
-$user=$resUser->fetch_assoc();
+$res=$conn->query("SELECT username FROM users WHERE id='$id'");
+$user=$res->fetch_assoc();
 
-$search="";
+$totalUsers = $conn->query("SELECT COUNT(*) as c FROM users")->fetch_assoc()['c'];
+$totalAppointments = $conn->query("SELECT COUNT(*) as c FROM appointments")->fetch_assoc()['c'];
 
-if($_POST){
-$search=$_POST['search'];
-$users=$conn->query("SELECT * FROM users WHERE role='user' AND username LIKE '%$search%'");
-}else{
-$users=$conn->query("SELECT * FROM users WHERE role='user'");
-}
+$careers = $conn->query("SELECT * FROM careers ORDER BY id DESC");
+$contacts = $conn->query("SELECT * FROM contacts ORDER BY id DESC");
 ?>
 
 <link rel="stylesheet" href="style.css">
@@ -26,7 +27,11 @@ $users=$conn->query("SELECT * FROM users WHERE role='user'");
 <h2>Admin Portal</h2>
 <div>
 <span>Welcome <?php echo $user['username']; ?>!</span>
+
+<a href="admin_dashboard.php">Dashboard</a>
+<a href="admin_appointments.php">Appointments</a>
 <a href="messages.php">Messages</a>
+<a href="admin_prescriptions.php">Prescriptions</a>
 <a href="logout.php">Logout</a>
 </div>
 </div>
@@ -34,16 +39,39 @@ $users=$conn->query("SELECT * FROM users WHERE role='user'");
 <div class="container">
 
 <div class="card">
-<form method="POST">
-<input name="search" placeholder="Search patients">
-<button>Search</button>
-</form>
+<h3>System Overview</h3>
+<p>Total Users: <?php echo $totalUsers; ?></p>
+<p>Total Appointments: <?php echo $totalAppointments; ?></p>
+</div>
+
+<div class="card"><a href="admin_records.php">📁 Records</a></div>
+<div class="card"><a href="admin_billing.php">💳 Billing</a></div>
+<div class="card"><a href="admin_notes.php">🩺 Clinical Notes</a></div>
+<div class="card"><a href="admin_insurance.php">🛡️ Insurance</a></div>
+<div class="card"><a href="admin_documents.php">📄 Documents</a></div>
+
+<div class="card">
+<h3>Career Applications</h3>
+
+<?php while($row=$careers->fetch_assoc()){ ?>
+<p>
+<b><?php echo $row['name']; ?></b> (<?php echo $row['email']; ?>)
+applied for <?php echo $row['position']; ?>
+</p>
+<?php } ?>
+
 </div>
 
 <div class="card">
-<?php while($row=$users->fetch_assoc()){ ?>
-<p><?php echo $row['username']; ?></p>
+<h3>Contact Messages</h3>
+
+<?php while($row=$contacts->fetch_assoc()){ ?>
+<p>
+<b><?php echo $row['name']; ?></b> (<?php echo $row['email']; ?>):
+<?php echo $row['message']; ?>
+</p>
 <?php } ?>
+
 </div>
 
 </div>
