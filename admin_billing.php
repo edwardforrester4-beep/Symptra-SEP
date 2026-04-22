@@ -18,17 +18,7 @@ JOIN users ON billing.user_id = users.id
 
 <link rel="stylesheet" href="style.css">
 
-<div class="navbar">
-<h2>Admin Portal</h2>
-<div>
-<a href="admin_dashboard.php">Dashboard</a>
-<a href="admin_appointments.php">Appointments</a>
-<a href="admin_records.php">Records</a>
-<a href="admin_billing.php">Billing</a>
-<a href="messages.php">Messages</a>
-<a href="logout.php">Logout</a>
-</div>
-</div>
+<?php include 'navbar.php'; ?>
 
 <div class="container">
 <div class="card">
