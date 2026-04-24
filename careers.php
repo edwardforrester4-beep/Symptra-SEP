@@ -11,7 +11,6 @@ if($_POST){
     $email=$_POST['email'];
     $position=$_POST['position'];
 
-    /* FILE UPLOAD */
     $fileName = $_FILES['resume']['name'];
     $tmpName = $_FILES['resume']['tmp_name'];
 
@@ -21,6 +20,8 @@ if($_POST){
     $conn->query("INSERT INTO careers(name,email,position,resume)
     VALUES('$name','$email','$position','$path')");
 }
+
+$applications = $conn->query("SELECT * FROM careers ORDER BY id DESC");
 ?>
 
 <link rel="stylesheet" href="style.css">
@@ -29,7 +30,6 @@ if($_POST){
 
 <div class="container">
 
-<!-- JOB LIST (TIGHTER) -->
 <div class="card">
 <h3>Current Openings</h3>
 
@@ -45,20 +45,39 @@ if($_POST){
 
 </div>
 
-<!-- FORM -->
 <div class="card">
-
 <h3>Apply for a Position</h3>
 
 <form method="POST" enctype="multipart/form-data">
 <input name="name" placeholder="Full Name" required>
 <input name="email" placeholder="Email" required>
 <input name="position" placeholder="Position" required>
-
 <input type="file" name="resume" required>
-
 <button>Apply</button>
 </form>
+
+</div>
+
+<div class="card">
+<h3>Applications</h3>
+
+<?php while($row=$applications->fetch_assoc()){ ?>
+<div class="card">
+
+<p><b><?php echo $row['name']; ?></b></p>
+<p><?php echo $row['email']; ?></p>
+<p>Applied for: <?php echo $row['position']; ?></p>
+
+<?php if(!empty($row['resume'])){ ?>
+<p>
+<a href="<?php echo $row['resume']; ?>" target="_blank">
+📄 View Resume
+</a>
+</p>
+<?php } ?>
+
+</div>
+<?php } ?>
 
 </div>
 
